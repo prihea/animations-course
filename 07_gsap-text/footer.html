@@ -1,0 +1,126 @@
+<script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+
+<script>
+	$(function () {
+
+		gsap.registerPlugin(ScrollTrigger);
+
+
+		let splitText;
+		$('[data-split-text]').each(function (i, _el) {
+			let elTypes = $(_el).data('types') || 'lines, words, chars';
+			let elTagName = $(_el).data('tag') || 'span';
+			splitText = new SplitType(_el, {
+				types: elTypes,
+				tagName: elTagName
+			});
+		});
+
+
+		$('[data-text-fade-in]').each(function (i, _el) {
+			const top = $(_el).data('top') || 50;
+
+			const timeline = gsap.timeline({
+				scrollTrigger: {
+					trigger: _el,
+					start: `top ${top}%`
+				}
+			});
+
+			timeline.from($(_el).find('.char'), {
+				css: {
+					rotationY: -40,
+					yPercent: -2,
+					opacity: 0,
+				},
+				duration: 0.5,
+				stagger: {
+					amount: 0.5,
+					from: 'random'
+				},
+				onComplete: () => SplitType.revert(_el)
+			});
+		});
+
+
+		$('[data-text-reveal]').each(function (i, _el) {
+			const top = $(_el).data('top') || 50;
+
+			const timeline = gsap.timeline({
+				scrollTrigger: {
+					trigger: _el,
+					start: `top ${top}%`
+				}
+			});
+
+			timeline.from($(_el).find('.word'), {
+				yPercent: 100,
+				duration: 0.3,
+				stagger: {
+					each: 0.05,
+					from: 'start'
+				},
+				onComplete: () => SplitType.revert(_el)
+			});
+		});
+
+
+		$('[data-text-lines]').each(function (i, _el) {
+			$(_el).find('.line').append('<div class="line-mask"></div>');
+
+			gsap.set('.line', {
+				position: 'relative'
+			});
+			gsap.set('.line-mask', {
+				position: 'absolute',
+				top: 0,
+				right: 0,
+				zIndex: 2,
+				width: '100%',
+				height: '100%',
+				backgroundColor: 'var(--base-color-neutral--white)',
+				opacity: 0.75
+			});
+
+			$('.line').each(function (i, _el) {
+				const timeline = gsap.timeline({
+					scrollTrigger: {
+						trigger: _el,
+						start: 'top center',
+						end: 'bottom center',
+						scrub: 2
+					}
+				});
+
+				timeline.to($(_el).find('.line-mask'), {
+					width: '0%',
+					duration: 1
+				});
+			})
+		});
+
+
+		$('[data-text-hover]').each(function (i, _el) {
+			const letters = $(_el).find('.char');
+			_el.addEventListener('mouseenter', function () {
+				gsap.to(letters, {
+					yPercent: -100,
+					duration: 0.4,
+					stagger: { each: 0.03, from: 'start' },
+					overwrite: 'auto'
+				});
+			});
+			_el.addEventListener('mouseleave', function () {
+				gsap.to(letters, {
+					yPercent: 0,
+					duration: 0.4,
+					stagger: { each: 0.03, from: 'end' },
+					overwrite: 'auto'
+				});
+			});
+		});
+
+	});
+</script>

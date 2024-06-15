@@ -1,0 +1,46 @@
+<style>
+
+.text-gradient-3 {
+		background-size: 200% 100%;
+		animation: text-gradient 4s infinite linear
+	}
+
+	@keyframes text-gradient {
+		to {
+			background-position: 200% 0;
+		}
+	}
+
+
+
+
+
+
+	.button.is-gradient-3 {
+		background-size: 200% 100%;
+	}
+
+	.button.is-revert-gradient {
+		background-position: 100% 0;
+	}
+
+	.button.is-in-animation {
+		animation: button-gradient-to-end 0.5s linear forwards
+	}
+
+	.button.is-out-animation {
+		animation: button-gradient-to-start 0.5s linear forwards
+	}
+
+	@keyframes button-gradient-to-end {
+		to {
+			background-position: 100% 0;
+		}
+	}
+
+	@keyframes button-gradient-to-start {
+		to {
+			background-position: 0 0;
+		}
+	}
+</style>

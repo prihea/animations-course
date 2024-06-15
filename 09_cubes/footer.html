@@ -1,0 +1,43 @@
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+
+<script>
+
+  $(function () {
+    gsap.registerPlugin(ScrollTrigger);
+
+
+    $('[data-mosaic]').each(function (i, _el) {
+      const curEl = $(_el);
+      let columns = 20;
+      const triggerTop = curEl.data('trigger-top') || 70;
+      const cubeWidth = curEl.innerWidth() / columns;
+      const rows = Math.round(curEl.innerHeight() / cubeWidth);
+      const numberOfCubes = Math.round(columns * rows);
+      const overlayBlock = curEl.find('[data-overlay]');
+
+      for (let i = 0; i < numberOfCubes; i++) {
+        overlayBlock.append('<div class="mosaic_cube"></div>')
+      }
+
+      const timeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: _el,
+          start: `top ${triggerTop}%`
+        }
+      });
+
+      timeline.to(curEl.find('.mosaic_cube'), {
+        opacity: 0,
+        duration: 0,
+        stagger: {
+          amount: 0.75,
+          from: 'random'
+        },
+        onComplete: () => { overlayBlock.remove() }
+      })
+    })
+  });
+
+</script>

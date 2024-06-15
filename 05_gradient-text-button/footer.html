@@ -1,0 +1,22 @@
+<script>
+  $(function () {
+
+    const duration = 500;
+
+    $('[data-gradient-button]').on('mouseover', function () {
+      $(this).addClass('is-in-animation');
+      setTimeout(() => {
+        $(this).addClass('is-revert-gradient');
+        $(this).removeClass('is-in-animation');
+      }, duration);
+    });
+
+    $('[data-gradient-button]').on('mouseleave', function () {
+      $(this).addClass('is-out-animation');
+      setTimeout(() => {
+        $(this).removeClass('is-out-animation is-revert-gradient');
+      }, duration);
+    });
+  });
+
+</script>

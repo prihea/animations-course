@@ -1,0 +1,18 @@
+<script>
+
+	$(function () {
+		$(document).on('pointermove', '[data-magic-image]', function (event) {
+			const gallery = $(this);
+			const maskSize = gallery.data('magic-mask-size') || 320;
+			const galleryRect = gallery[0].getBoundingClientRect();
+			const mouseX = event.clientX - galleryRect.left;
+			const mouseY = event.clientY - galleryRect.top;
+			const maskX = (mouseX - maskSize / 2) + 'px';
+			const maskY = (mouseY - maskSize / 2) + 'px';
+
+			gallery.css('--magic-mask--x', maskX);
+			gallery.css('--magic-mask--y', maskY);
+		});
+	});
+
+</script>

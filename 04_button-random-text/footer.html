@@ -1,0 +1,75 @@
+<script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js" defer></script>
+
+<script>
+
+	function getRandomLetter(length) {
+		var result = '';
+		var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		var charactersLength = characters.length;
+		for (var i = 0; i < length; i++) {
+			result += characters.charAt(Math.floor(Math.random() * charactersLength));
+		}
+		return result;
+	}
+
+	function resetText(_interval, _charsEl) {
+		if (_interval !== undefined) {
+			clearInterval(_interval);
+		}
+		_charsEl.each(function (i) {
+			let letter = $(this).attr('data-letter');
+			$(this).text(letter);
+			$(this).removeClass('text-color-tertiary');
+		});
+	}
+
+
+	$(function () {
+		const buttonTextAnimation = function () {
+			let typeSplit = new SplitType('[data-button-text]', {
+				types: 'words, chars',
+				tagName: 'span'
+			});
+
+			$('.char').each(function (i) {
+				let text = $(this).text();
+				$(this).attr('data-letter', text);
+			});
+
+			$('[data-button]').each(function (i) {
+				let myInterval;
+				let chars = $(this).find('.char');
+				const speed = $(this).data('speed') || 50;
+
+				$(this).on('mouseenter', function () {
+					let length = chars.length;
+					myInterval = setInterval(function () {
+						chars.each(function (i) {
+							if (i < length) {
+								let letter = getRandomLetter(1);
+								$(this).text(letter);
+								$(this).addClass('text-color-tertiary');
+							} else {
+								let letter = $(this).attr('data-letter');
+								$(this).text(letter);
+								$(this).removeClass('text-color-tertiary');
+							}
+						});
+						length = length - 1;
+					}, speed);
+				});
+				$(this).on('mouseleave', function () {
+					resetText(myInterval, chars);
+				});
+			});
+
+		};
+
+		if ($(window).width() > 1024) {
+			buttonTextAnimation();
+		}
+
+	});
+
+
+</script>

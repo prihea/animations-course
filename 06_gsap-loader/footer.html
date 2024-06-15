@@ -1,0 +1,56 @@
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+
+<script>
+
+  $(function () {
+
+    const loader = $('#loader');
+    const loaderProgress = $('#loader-progress');
+    const loaderPercentage = $('#loader-percentage');
+
+    let loaderDuration = sessionStorage.getItem('visited') == null ? 5 : 0.5;
+    let percentageCounter = {
+      value: 0
+    };
+
+    function updatePercentage() {
+      let progress = Math.round(percentageCounter.value);
+      loaderPercentage.text(progress);
+    }
+
+    if (sessionStorage.getItem('visited') !== null) {
+      percentageCounter.value = 92;
+      gsap.set(loaderProgress, { width: '92%' })
+    }
+
+    loaderPercentage.text(percentageCounter.value);
+
+    let loaderTl = gsap.timeline({
+      defaults: {
+        ease: 'power3.in',
+        duration: loaderDuration
+      }
+    });
+
+    loaderTl
+      .to(loaderProgress, {
+        width: '100%'
+      })
+      .to(percentageCounter, {
+        value: 100,
+        onUpdate: updatePercentage
+      }, 0)
+      .to(loader, {
+        opacity: 0,
+        delay: 0.3,
+        duration: 0.5,
+        ease: 'power1.inOut'
+      })
+      .set(loader, {
+        display: 'none'
+      })
+
+    sessionStorage.setItem('visited', 'true');
+
+  });
+</script>

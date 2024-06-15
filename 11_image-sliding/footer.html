@@ -1,0 +1,53 @@
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+
+<script>
+
+  $(function () {
+    gsap.registerPlugin(ScrollTrigger);
+
+
+    $('[data-image-sliding]').each(function (i, el) {
+      const imageWrapper = $(el);
+      const initialImage = imageWrapper.children('img');
+      const curSrc = initialImage.attr('src');
+      const curClass = initialImage.attr('class');
+      const curAlt = initialImage.attr('alt');
+
+      initialImage.before('\
+					<img class="' + curClass + ' is-start is-animated" src="' + curSrc + '" alt="' + curAlt + '">' +
+        '<img class="' + curClass + ' is-end is-animated" src="' + curSrc + '" alt="' + curAlt + '">'
+      );
+
+      const startImage = imageWrapper.children('.is-start');
+      const endImage = imageWrapper.children('.is-end');
+
+      gsap.set(startImage, {
+        position: 'absolute',
+        top: '0%',
+        left: 0,
+        zIndex: 2,
+      });
+      gsap.set(endImage, {
+        position: 'absolute',
+        top: '100%',
+        left: 0,
+        zIndex: 2,
+      });
+
+      gsap.timeline({
+        ease: 'sine.inOut',
+        scrollTrigger: {
+          trigger: imageWrapper,
+          scrub: true
+        }
+      })
+        .fromTo(imageWrapper.children('.is-animated'),
+          { yPercent: 100 },
+          { yPercent: -100 }
+        )
+    })
+  });
+
+</script>
