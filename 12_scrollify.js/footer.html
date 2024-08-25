@@ -1,0 +1,46 @@
+<script defer src="https://uploads-ssl.webflow.com/65ddbb800014ad5a4325041e/6682d7b7f3abe7523ef79d4e_custom-fix-glitch.min.txt" type="text/javascript"></script>
+
+<script>
+  $(function () {
+    //init scrollify
+    $.scrollify({
+      section: '[data-scroll-section]',
+      sectionName: 'scroll-section',
+      interstitialSection: '[data-interstitial]',
+      easing: 'easeOutExpo',
+      scrollSpeed: 1000,
+      offset: 0,
+      scrollbars: true,
+      standardScrollElements: '',
+      setHeights: true,
+      overflowScroll: true,
+      updateHash: true,
+      touchScroll: true,
+      before: function () {
+        setTimeout(function () {
+          let curSectionId = $.scrollify.current().data('scroll-section');
+          
+          $('[data-scroll-nav-button]').removeClass('is-active');
+          $(`[data-scroll-nav-button="${curSectionId}"]`).addClass('is-active');
+
+          $('#nav').toggleClass('is-inverted', $.scrollify.currentIndex() % 2 !== 0);
+        }, 200);
+      }
+    });
+
+    //Behavior of page navigation
+    $('[data-scroll-nav-button]').on('click', function () {
+      let sectionName = '#' + $(this).data('scroll-nav-button');
+      $.scrollify.move(sectionName);
+
+      $('[data-scroll-nav-button]').removeClass('is-active');
+      $(this).addClass('is-active');
+    });
+
+    //Behavior of accordions
+    $('[data-accordion-button]').on('click', function () {
+      $.scrollify.update();
+    });
+  });
+
+</script>
