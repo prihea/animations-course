@@ -1,0 +1,55 @@
+<script defer src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+  $(function () {
+
+    let fancySwiper = new Swiper('#fancy-swiper', {
+      speed: 1500,
+      slidesPerView: 1,
+      spaceBetween: 0,
+      effect: 'creative',
+      creativeEffect: {
+        limitProgress: 100,
+        prev: {
+          translate: [0, '-100%', 0],
+        },
+        next: {
+          translate: [0, '100%', 0],
+        },
+      },
+    })
+
+    $('[data-fancy-item]').on('mouseover', function () {
+      fancySwiper.slideTo($(this).index())
+    })
+
+    const serviceSliderAnimation = function () {
+      const fancyComponent = $('#fancy-component')
+      const slider = $('#fancy-swiper')
+
+      function setSliderPosition(_event) {
+        const sliderRect = slider[0].getBoundingClientRect();
+        const fancyComponentRect = fancyComponent[0].getBoundingClientRect();
+        const mouseX = _event.clientX - fancyComponentRect.left;
+        const mouseY = _event.clientY - fancyComponentRect.top;
+        const sliderX = (mouseX - sliderRect.width / 2) + 'px';
+        const sliderY = (mouseY - sliderRect.height / 2) + 'px';
+
+        slider[0].style.setProperty('--fancy-list--swiper-left', sliderX);
+        slider[0].style.setProperty('--fancy-list--swiper-top', sliderY);
+      }
+
+      document.addEventListener('pointermove', function (e) {
+        if (fancyComponent[0].contains(e.target)) {
+          setSliderPosition(e);
+        }
+      })
+
+      fancyComponent.on('mouseover', function (e) {
+        setSliderPosition(e);
+      })
+    }
+    serviceSliderAnimation();
+
+  });
+</script>

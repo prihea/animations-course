@@ -1,0 +1,17 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+<style>
+  .swiper.is-fancy-list {
+    position: absolute;
+    top: var(--fancy-list--swiper-top);
+    left: var(--fancy-list--swiper-left);
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0
+  }
+
+  .fancy-list_component:hover .swiper.is-fancy-list {
+    opacity: 100%;
+    z-index: 10
+  }
+</style>
